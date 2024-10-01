@@ -10,4 +10,8 @@ public class CompressionService {
     public String compress(String input) {
         return HuffmanCoding.compress(input);
     }
+
+    public String decompress(String compressedText){
+        return HuffmanCoding.decompress(compressedText);
+    }
 }

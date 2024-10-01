@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from "react";
 import FileUpload from "./components/FileUpload";
 import ResultDisplay from "./components/ResultDisplay";
@@ -28,11 +27,23 @@ function App() {
           },
         }
       );
+
       setResponseData(response.data);
     } catch (err) {
       setError("Error processing file. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadEncryptedFile = () => {
+    if (responseData && responseData.encryptedFileUrl) {
+      const link = document.createElement("a");
+      link.href = responseData.encryptedFileUrl;
+      link.download = "encrypted_file.txt"; // You can set the file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
@@ -51,7 +62,14 @@ function App() {
         <div className="status-section">
           {loading && <p className="loading">Processing file, please wait...</p>}
           {error && <p className="error">{error}</p>}
-          {responseData && <ResultDisplay response={responseData} />}
+          {responseData && (
+            <>
+              <ResultDisplay response={responseData} />
+              <button className="download-btn" onClick={handleDownloadEncryptedFile}>
+                Download Encrypted File
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
